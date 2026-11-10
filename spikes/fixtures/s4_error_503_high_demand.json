@@ -1,0 +1,51 @@
+{
+    "request": {
+        "model": "gemini-3.8-flash",
+        "store": false,
+        "system_instruction": "You are the assistant for Stride, a fictional shoe store. Answer size questions only from check_size_availability results. Be brief.",
+        "tools": [
+            {
+                "type": "function",
+                "name": "check_size_availability",
+                "description": "Check whether a Stride shoe is in stock in a given US size.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "slug": {
+                            "type": "string",
+                            "description": "Product slug, e.g. \"trailblazer\""
+                        },
+                        "size": {
+                            "type": "number",
+                            "description": "US size, 6 to 13 in half sizes"
+                        }
+                    },
+                    "required": [
+                        "slug",
+                        "size"
+                    ]
+                }
+            }
+        ],
+        "input": [
+            {
+                "type": "user_input",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Is the Trailblazer available in size 9? If not, check 9.5 too."
+                    }
+                ]
+            }
+        ]
+    },
+    "response": {
+        "status": 503,
+        "body": {
+            "error": {
+                "message": "gemini-3.8-flash is currently experiencing high demand, spikes in demand are usually temporary. Please try again later.",
+                "code": "service_unavailable"
+            }
+        }
+    }
+}

@@ -1,0 +1,130 @@
+{
+    "request": {
+        "model": "gemini-3.6-flash",
+        "store": false,
+        "system_instruction": "You are the assistant for Stride, a fictional shoe store. Answer size questions only from check_size_availability results. Be brief.",
+        "tools": [
+            {
+                "type": "function",
+                "name": "check_size_availability",
+                "description": "Check whether a Stride shoe is in stock in a given US size.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "slug": {
+                            "type": "string",
+                            "description": "Product slug, e.g. \"trailblazer\""
+                        },
+                        "size": {
+                            "type": "number",
+                            "description": "US size, 6 to 13 in half sizes"
+                        }
+                    },
+                    "required": [
+                        "slug",
+                        "size"
+                    ]
+                }
+            }
+        ],
+        "input": [
+            {
+                "type": "user_input",
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Is the Trailblazer available in size 9? If not, check 9.5 too."
+                    }
+                ]
+            },
+            {
+                "signature": "<REDACTED_SIGNATURE>",
+                "type": "thought"
+            },
+            {
+                "id": "call_232634",
+                "type": "function_call",
+                "name": "check_size_availability",
+                "arguments": {
+                    "slug": "trailblazer",
+                    "size": 9
+                }
+            },
+            {
+                "type": "function_result",
+                "name": "check_size_availability",
+                "call_id": "call_232634",
+                "result": [
+                    {
+                        "type": "text",
+                        "text": "{\"product\":\"trailblazer\",\"size\":9,\"in_stock\":false,\"quantity_band\":\"none\",\"alternatives\":[8,9.5,10]}"
+                    }
+                ]
+            },
+            {
+                "signature": "<REDACTED_SIGNATURE>",
+                "type": "thought"
+            },
+            {
+                "id": "call_326370",
+                "type": "function_call",
+                "name": "check_size_availability",
+                "arguments": {
+                    "size": 9.5,
+                    "slug": "trailblazer"
+                }
+            },
+            {
+                "type": "function_result",
+                "name": "check_size_availability",
+                "call_id": "call_326370",
+                "result": [
+                    {
+                        "type": "text",
+                        "text": "{\"product\":\"trailblazer\",\"size\":9.5,\"in_stock\":true,\"quantity_band\":\"low\",\"alternatives\":[8,9.5,10]}"
+                    }
+                ]
+            }
+        ]
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "status": "completed",
+            "usage": {
+                "total_tokens": 442,
+                "total_input_tokens": 353,
+                "input_tokens_by_modality": [
+                    {
+                        "modality": "text",
+                        "tokens": 353
+                    }
+                ],
+                "total_cached_tokens": 0,
+                "total_output_tokens": 24,
+                "total_tool_use_tokens": 0,
+                "total_thought_tokens": 65
+            },
+            "created": "2026-10-24T04:47:51Z",
+            "updated": "2026-10-24T04:47:51Z",
+            "service_tier": "standard",
+            "steps": [
+                {
+                    "signature": "<REDACTED_SIGNATURE>",
+                    "type": "thought"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "The Trailblazer is out of stock in size 9, but it is available in size 9.5.",
+                            "type": "text"
+                        }
+                    ],
+                    "type": "model_output"
+                }
+            ],
+            "object": "interaction",
+            "model": "gemini-3.6-flash"
+        }
+    }
+}

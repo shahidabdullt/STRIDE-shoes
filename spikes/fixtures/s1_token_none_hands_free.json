@@ -1,0 +1,16 @@
+{
+    "request": {
+        "POST": "https://generativelanguage.googleapis.com/v1beta/auth_tokens",
+        "body": {
+            "uses": 1,
+            "expireTime": "2026-10-24T04:57:22Z",
+            "newSessionExpireTime": "2026-10-24T04:46:22Z"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "name": "auth_tokens/<REDACTED_TOKEN>"
+        }
+    }
+}

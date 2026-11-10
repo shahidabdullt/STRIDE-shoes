@@ -1,0 +1,101 @@
+{
+    "request": {
+        "model": "gemini-3.6-flash",
+        "store": false,
+        "system_instruction": "Classify each distinct customer question. \"answered\" only if supported by a tool result shown in the transcript.",
+        "input": "customer: Do you have the Trailblazer in size 10?\nassistant: [tool check_size_availability -> in_stock=true, band=available] Yes, size 10 is in stock.\ncustomer: Do you ship to Iceland?\nassistant: I'm sorry, I don't have information about shipping to Iceland.\ncustomer: Tell me a joke.\nassistant: I can only help with Stride shoes and orders.",
+        "response_format": {
+            "type": "text",
+            "mime_type": "application/json",
+            "schema": {
+                "type": "object",
+                "properties": {
+                    "questions": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "question": {
+                                    "type": "string"
+                                },
+                                "topic": {
+                                    "type": "string"
+                                },
+                                "outcome": {
+                                    "type": "string",
+                                    "enum": [
+                                        "answered",
+                                        "not_answered",
+                                        "out_of_scope"
+                                    ]
+                                },
+                                "source": {
+                                    "type": "string",
+                                    "enum": [
+                                        "catalog",
+                                        "knowledge",
+                                        "both",
+                                        "none"
+                                    ]
+                                },
+                                "reason": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "question",
+                                "topic",
+                                "outcome",
+                                "source",
+                                "reason"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "questions"
+                ]
+            }
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "status": "completed",
+            "usage": {
+                "total_tokens": 1198,
+                "total_input_tokens": 120,
+                "input_tokens_by_modality": [
+                    {
+                        "modality": "text",
+                        "tokens": 120
+                    }
+                ],
+                "total_cached_tokens": 0,
+                "total_output_tokens": 243,
+                "total_tool_use_tokens": 0,
+                "total_thought_tokens": 835
+            },
+            "created": "2026-10-24T04:47:59Z",
+            "updated": "2026-10-24T04:47:59Z",
+            "service_tier": "standard",
+            "steps": [
+                {
+                    "signature": "<REDACTED_SIGNATURE>",
+                    "type": "thought"
+                },
+                {
+                    "content": [
+                        {
+                            "text": "{\n  \"questions\": [\n    {\n      \"question\": \"Do you have the Trailblazer in size 10?\",\n      \"topic\": \"Product Availability\",\n      \"outcome\": \"answered\",\n      \"source\": \"catalog\",\n      \"reason\": \"Availability for size 10 of the Trailblazer was checked using the catalog tool check_size_availability, confirming it is in stock.\"\n    },\n    {\n      \"question\": \"Do you ship to Iceland?\",\n      \"topic\": \"International Shipping\",\n      \"outcome\": \"not_answered\",\n      \"source\": \"none\",\n      \"reason\": \"The assistant stated it did not have information regarding shipping to Iceland, and no tool results provided the answer.\"\n    },\n    {\n      \"question\": \"Tell me a joke.\",\n      \"topic\": \"Off-topic / Chitchat\",\n      \"outcome\": \"out_of_scope\",\n      \"source\": \"none\",\n      \"reason\": \"Asking for a joke is unrelated to Stride shoes, products, or order support.\"\n    }\n  ]\n}",
+                            "type": "text"
+                        }
+                    ],
+                    "type": "model_output"
+                }
+            ],
+            "object": "interaction",
+            "model": "gemini-3.6-flash"
+        }
+    }
+}

@@ -1,0 +1,34 @@
+*.log
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.fleet
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+
+# Local AI-tooling files (CLAUDE.md is deliberately NOT ignored: it is checked in)
+/.claude
+/.cursor
+/.mcp.json
+/AGENTS.md
+/boost.json
+Homestead.json
+Homestead.yaml
+Thumbs.db
+
+# Full-size originals of the product photos; only the resized copies in public/images/products are committed
+/product-images

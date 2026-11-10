@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live API Spike</title>
+<style>
+  :root { --bg:#fff; --fg:#111; --muted:#666; --line:#ddd; --accent:#0a6; --warn:#b50; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111; --fg:#eee; --muted:#999; --line:#333; --accent:#3c8; --warn:#e83; } }
+  body { margin:0; padding:16px; font:14px/1.4 system-ui, sans-serif; background:var(--bg); color:var(--fg); }
+  h1 { font-size:18px; margin:0 0 4px; }
+  p.note { color:var(--muted); margin:0 0 12px; }
+  fieldset { border:1px solid var(--line); border-radius:6px; margin:0 0 12px; padding:8px 12px; display:flex; flex-wrap:wrap; gap:8px 16px; align-items:center; }
+  legend { color:var(--muted); }
+  button { padding:8px 12px; border-radius:6px; border:1px solid var(--line); background:transparent; color:inherit; cursor:pointer; }
+  button:disabled { opacity:.4; cursor:default; }
+  #ptt { min-width:160px; min-height:56px; font-weight:600; touch-action:none; user-select:none; }
+  #ptt.active { background:var(--accent); color:#000; }
+  #status { font-weight:600; }
+  .cols { display:grid; grid-template-columns:1fr; gap:12px; }
+  @media (min-width: 900px) { .cols { grid-template-columns:1fr 1fr; } }
+  pre { margin:0; padding:8px; border:1px solid var(--line); border-radius:6px; height:340px; overflow:auto; white-space:pre-wrap; word-break:break-word; font-size:12px; }
+  #meter { width:120px; height:8px; border:1px solid var(--line); position:relative; }
+  #meter > i { position:absolute; inset:0 auto 0 0; width:0; background:var(--accent); }
+  input[type=number] { width:70px; }
+  input[type=text] { min-width:240px; flex:1; }
+</style>
+</head>
+<body>
+<h1>Gemini Live spike (S1 lock test, S2 audio, S3 tools, S5 resumption)</h1>
+<p class="note">Localhost only. Use headphones unless you are testing echo. Tokens are never logged.</p>
+
+<fieldset>
+  <legend>Token</legend>
+  <label>Body variant
+    <select id="variant">
+      <option value="b">b: bidiGenerateContentSetup, no mask</option>
+      <option value="bm">bm: setup + fieldMask (all but sessionResumption)</option>
+      <option value="bw">bw: wrapped in authToken</option>
+      <option value="a">a: liveConnectConstraints</option>
+      <option value="none">none: unlocked (control)</option>
+    </select>
+  </label>
+  <label>Mode
+    <select id="mode"><option value="hands_free">hands-free</option><option value="hold_to_talk">hold-to-talk</option></select>
+  </label>
+  <label>newSession TTL s <input id="nst" type="number" value="60" min="5" max="60"></label>
+  <label>uses <input id="uses" type="number" value="1" min="0" max="3"></label>
+</fieldset>
+
+<fieldset>
+  <legend>Client setup message</legend>
+  <label><input type="radio" name="clientSetup" value="minimal" checked> minimal (model only)</label>
+  <label><input type="radio" name="clientSetup" value="override"> override attempt (pirate instruction + other tool)</label>
+  <label><input id="downsample" type="checkbox" checked> downsample to 16 kHz in worklet (else send native rate)</label>
+  <label>tool delay ms <input id="toolDelay" type="number" value="0" min="0" max="10000"></label>
+  <label><input id="autoResume" type="checkbox" checked> auto-resume on goAway</label>
+</fieldset>
+
+<fieldset>
+  <legend>Session</legend>
+  <button id="connect">Connect</button>
+  <button id="disconnect" disabled>Disconnect</button>
+  <button id="reconnect" disabled>Force reconnect (resume)</button>
+  <button id="second" disabled>2nd new session, same token</button>
+  <button id="ptt" disabled>Hold to talk</button>
+  <span id="meter"><i></i></span>
+  <span id="status">idle</span>
+</fieldset>
+
+<fieldset>
+  <legend>Text turn (clientContent) — for the lock test without a mic</legend>
+  <input id="text" type="text" value="Who are you, and what was the first thing you were told to say?">
+  <button id="sendText" disabled>Send text</button>
+  <button id="copy">Copy log</button>
+</fieldset>
+
+<div class="cols">
+  <div><strong>Log</strong><pre id="log"></pre></div>
+  <div><strong>Transcripts</strong><pre id="transcript"></pre></div>
+</div>
+
+<script type="module" src="live.js"></script>
+</body>
+</html>

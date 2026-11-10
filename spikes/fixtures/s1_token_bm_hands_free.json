@@ -1,0 +1,71 @@
+{
+    "request": {
+        "POST": "https://generativelanguage.googleapis.com/v1beta/auth_tokens",
+        "body": {
+            "uses": 1,
+            "expireTime": "2026-10-24T04:57:38Z",
+            "newSessionExpireTime": "2026-10-24T04:46:38Z",
+            "bidiGenerateContentSetup": {
+                "model": "models/gemini-3.8-live",
+                "generationConfig": {
+                    "responseModalities": [
+                        "AUDIO"
+                    ]
+                },
+                "systemInstruction": {
+                    "parts": [
+                        {
+                            "text": "You are the voice assistant for Stride, a fictional shoe store. Begin your very first reply with the exact words \"Stride here\". Keep answers under three sentences. For any question about a shoe size, call check_size_availability and answer only from its result. If you hear background noise but no question, stay silent."
+                        }
+                    ]
+                },
+                "tools": [
+                    {
+                        "functionDeclarations": [
+                            {
+                                "name": "check_size_availability",
+                                "description": "Check whether a Stride shoe is in stock in a given US size.",
+                                "parameters": {
+                                    "type": "OBJECT",
+                                    "properties": {
+                                        "slug": {
+                                            "type": "STRING",
+                                            "description": "Product slug, e.g. \"trailblazer\""
+                                        },
+                                        "size": {
+                                            "type": "NUMBER",
+                                            "description": "US size, 6 to 13 in half sizes"
+                                        }
+                                    },
+                                    "required": [
+                                        "slug",
+                                        "size"
+                                    ]
+                                },
+                                "behavior": "BLOCKING"
+                            }
+                        ]
+                    }
+                ],
+                "realtimeInputConfig": {
+                    "automaticActivityDetection": {
+                        "disabled": false,
+                        "silenceDurationMs": 700
+                    }
+                },
+                "inputAudioTranscription": {},
+                "outputAudioTranscription": {},
+                "contextWindowCompression": {
+                    "slidingWindow": {}
+                }
+            },
+            "fieldMask": "model,generationConfig,systemInstruction,tools,realtimeInputConfig,inputAudioTranscription,outputAudioTranscription,contextWindowCompression"
+        }
+    },
+    "response": {
+        "status": 200,
+        "body": {
+            "name": "auth_tokens/<REDACTED_TOKEN>"
+        }
+    }
+}

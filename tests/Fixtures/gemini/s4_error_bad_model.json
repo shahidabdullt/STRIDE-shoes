@@ -1,0 +1,9 @@
+{
+    "status": 404,
+    "body": {
+        "error": {
+            "message": "Model 'no-such-model' not found. Did you mean 'gemini-flash-latest'? Please verify the model name against the supported list: https://ai.google.dev/gemini-api/docs/models",
+            "code": "not_found"
+        }
+    }
+}
