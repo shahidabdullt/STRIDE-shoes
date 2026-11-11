@@ -3,7 +3,6 @@
 namespace Tests\Feature\Analysis;
 
 use App\Analysis\ConversationAnalyzer;
-use App\Analysis\OutcomeCalculator;
 use App\Jobs\AnalyzeConversation;
 use App\Models\AiConfigVersion;
 use App\Models\Conversation;
@@ -63,17 +62,7 @@ class AnalyzeConversationTest extends TestCase
         ]]));
     }
 
-    public function test_the_outcome_rules(): void
-    {
-        $q = fn (string ...$outcomes) => array_map(fn ($o) => (object) ['outcome' => $o], $outcomes);
-
-        $this->assertSame(['success', null], array_values(array_slice(OutcomeCalculator::compute(false, $q('answered', 'out_of_scope')), 0, 2)));
-        $this->assertSame('success', OutcomeCalculator::compute(false, $q('out_of_scope'))['outcome'], 'only off-topic questions is a success');
-        $this->assertSame(['failed', 'knowledge_gap'], array_values(array_slice(OutcomeCalculator::compute(false, $q('answered', 'not_answered')), 0, 2)));
-        $this->assertSame(['failed', 'technical'], array_values(array_slice(OutcomeCalculator::compute(true, $q('answered')), 0, 2)));
-        $this->assertSame(['failed', 'both'], array_values(array_slice(OutcomeCalculator::compute(true, $q('not_answered')), 0, 2)));
-        $this->assertSame(1, OutcomeCalculator::compute(false, $q('answered', 'not_answered'))['questions_unanswered']);
-    }
+    // The outcome rules themselves are unit-tested in tests/Unit/OutcomeCalculatorTest.php.
 
     public function test_answered_unanswered_and_off_topic_give_a_failed_conversation(): void
     {
