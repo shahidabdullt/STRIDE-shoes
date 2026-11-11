@@ -115,6 +115,6 @@ Credentials live in `.env`, which is git-ignored. `.env.example` contains placeh
 - Voice has been tested in Edge on Windows (including a fake-microphone run against the real API). Safari, Firefox and real phones are untested, and phones need HTTPS (the Forge deploy). Voice latency and interruption speed have not been measured.
 - Voice transcripts and token counts are reported by the browser and marked as such in the admin. Token counts from voice sessions currently come through as 0.
 - Analysis results (questions, outcomes, data points, evaluations) have only been tested with a faked Gemini response so far.
-- No Git remote or CI run yet, so the workflow has not been executed on GitHub.
+- The code is on GitHub (`shahidabdullt/STRIDE-shoes`). CI runs on pushes to `main` and on pull requests; `main` is not branch-protected yet.
 - No Forge deployment yet.
 - Phase 0 items still unverified: voice interruption, hold-to-talk, the Live tool round trip, session resumption, Safari/Firefox and real phones. See `docs/phase-0-findings.md`.
